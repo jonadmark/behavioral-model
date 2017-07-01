@@ -28,6 +28,8 @@
 
 #include "jsoncpp/json.h"
 
+#define _unused(x) ((void)(x))
+
 namespace bm {
 
 McSimplePre::McReturnCode
@@ -153,9 +155,13 @@ McSimplePre::mc_node_destroy(const l1_hdl_t l1_hdl) {
   }
   rid = l1_entry.rid;
   l2_entries.erase(l1_entry.l2_hdl);
-  assert(!l2_handles.release_handle(l1_entry.l2_hdl));
+  int error;
+  _unused(error);
+  error = l2_handles.release_handle(l1_entry.l2_hdl);
+  assert(!error);
   l1_entries.erase(l1_hdl);
-  assert(!l1_handles.release_handle(l1_hdl));
+  error = l1_handles.release_handle(l1_hdl);
+  assert(!error);
   Logger::get()->debug("node destroyed for rid {}", rid);
   return SUCCESS;
 }
@@ -297,3 +303,5 @@ McSimplePre::node_dissociate(MgidEntry *mgid_entry, l1_hdl_t l1_hdl) {
 }
 
 }  // namespace bm
+
+#undef _unused

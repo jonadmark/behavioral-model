@@ -35,6 +35,8 @@
 
 #include "md5.h"
 
+#define _unused(x) ((void)(x))
+
 namespace bm {
 
 static void
@@ -317,7 +319,9 @@ SwitchWContexts::swap_configs() {
   {
     std::unique_lock<std::mutex> config_lock(config_mutex);
     if (!config_loaded) config_loaded = true;
-    assert(do_swap() == 0);
+    int error = do_swap();
+    _unused(error);
+    assert(!error);
   }
   config_loaded_cv.notify_one();
   return ErrorCode::SUCCESS;
@@ -522,3 +526,5 @@ Switch::new_packet(int ingress_port, packet_id_t id, int ingress_length,
 }
 
 }  // namespace bm
+
+#undef _unused

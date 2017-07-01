@@ -29,6 +29,8 @@
 #include <iostream>
 #include <limits>  // std::numeric_limits
 
+#define _unused(x) ((void)(x))
+
 namespace bm {
 
 namespace {
@@ -529,6 +531,7 @@ MatchTable::get_entries() const {
   for (auto it = match_unit->handles_begin(); it != match_unit->handles_end();
        it++) {
     MatchErrorCode rc = get_entry_(*it, &entries[idx++]);
+    _unused(rc);
     assert(rc == MatchErrorCode::SUCCESS);
   }
 
@@ -574,6 +577,7 @@ MatchTable::set_default_entry(const ActionFn *action_fn,
                               ActionData action_data, bool is_const) {
   assert(!const_default_entry);
   auto rc = set_default_action(action_fn, std::move(action_data));
+  _unused(rc);
   assert(rc == MatchErrorCode::SUCCESS);
   const_default_entry = is_const;
 }
@@ -824,6 +828,7 @@ MatchTableIndirect::get_entries() const {
   for (auto it = match_unit->handles_begin(); it != match_unit->handles_end();
        it++) {
     MatchErrorCode rc = get_entry_(*it, &entries[idx++]);
+    _unused(rc);
     assert(rc == MatchErrorCode::SUCCESS);
   }
 
@@ -1044,6 +1049,7 @@ MatchTableIndirectWS::get_entries() const {
   for (auto it = match_unit->handles_begin(); it != match_unit->handles_end();
        it++) {
     MatchErrorCode rc = get_entry_(*it, &entries[idx++]);
+    _unused(rc);
     assert(rc == MatchErrorCode::SUCCESS);
   }
 
@@ -1086,3 +1092,5 @@ MatchTableIndirectWS::deserialize_(std::istream *in, const P4Objects &objs) {
 }
 
 }  // namespace bm
+
+#undef _unused

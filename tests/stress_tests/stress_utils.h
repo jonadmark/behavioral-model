@@ -28,6 +28,8 @@
 #include <memory>
 #include <string>
 
+#define _unused(x) ((void)(x))
+
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
 

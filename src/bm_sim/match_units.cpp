@@ -35,6 +35,8 @@
 
 #include "utils.h"
 
+#define _unused(x) ((void)(x))
+
 namespace bm {
 
 #define HANDLE_VERSION(h) (h >> 24)
@@ -1143,7 +1145,9 @@ MatchUnitGeneric<K, V>::deserialize_(std::istream *in, const P4Objects &objs) {
   for (size_t i = 0; i < this->num_entries; i++) {
     Entry entry;
     internal_handle_t handle_; (*in) >> handle_;
-    assert(!this->handles.set_handle(handle_));
+    int error = this->handles.set_handle(handle_);
+    _unused(error);
+    assert(!error);
     uint32_t version; (*in) >> version;
     std::string key_hex; (*in) >> key_hex;
     entry.key.data = ByteContainer(key_hex);
@@ -1193,3 +1197,5 @@ template class
 MatchUnitGeneric<RangeMatchKey, ActionProfile::IndirectIndex>;
 
 }  // namespace bm
+
+#undef _unused

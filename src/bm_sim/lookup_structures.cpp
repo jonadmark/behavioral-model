@@ -32,6 +32,8 @@
 
 #include "lpm_trie.h"
 
+#define _unused(x) ((void)(x))
+
 namespace bm {
 
 namespace {  // anonymous
@@ -172,7 +174,9 @@ class TernaryCache {
     if (it != cache.end()) return false;
     if (cache.size() == S) {  // cache is full
       auto evict = entries.back();
-      assert(cache.erase(evict.key) == 1);
+      int success = cache.erase(evict.key);
+      _unused(success);
+      assert(success == 1);
       entries.pop_back();
     }
     entries.emplace_front(handle, key_data);
@@ -542,3 +546,5 @@ LookupStructureFactory::create_for_range(size_t size, size_t nbytes_key) {
 }
 
 }  // namespace bm
+
+#undef _unused
